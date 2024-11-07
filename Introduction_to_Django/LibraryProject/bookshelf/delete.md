@@ -5,4 +5,5 @@
 
 ## Command
 ```python
+book = Book.objects.get(title="Nineteen Eighty-Four")  # Retrieve the book first
 book.delete()
