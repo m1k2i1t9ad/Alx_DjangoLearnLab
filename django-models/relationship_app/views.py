@@ -3,13 +3,15 @@ from django.contrib.auth import logout
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm 
 from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic.detail import DetailView
 from .models import Book
 from .models import Library
 from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
 from .models import UserProfile
+from django.contrib.auth.decorators import permission_required
+from .models import Book
 
 # Function-based view to list all books
 def list_books(request):
@@ -74,3 +76,46 @@ def librarian_view(request):
 @user_passes_test(is_member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')  # Render the member view template
+
+
+@permission_required('relationship_app.can_add_book')
+def add_book(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        published_date = request.POST.get('published_date')
+
+        # Create a new book instance and save it
+        if title and author and published_date:  # Basic validation
+            new_book = Book(title=title, author=author, published_date=published_date)
+            new_book.save()
+            return redirect('book_list')  # Redirect to the book list view
+
+    return render(request, 'relationship_app/add_book.html')  # Render the add book template
+
+@permission_required('relationship_app.can_change_book')
+def edit_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        published_date = request.POST.get('published_date')
+
+        # Update the book instance
+        if title and author and published_date:  # Basic validation
+            book.title = title
+            book.author = author
+            book.published_date = published_date
+            book.save()
+            return redirect('book_detail', pk=book.pk)  # Redirect to the book detail view
+
+    return render(request, 'relationship_app/edit_book.html', {'book': book})  # Render the edit book template
+
+@permission_required('relationship_app.can_delete_book')
+def delete_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('book_list')  # Redirect to the book list view
+
+    return render(request, 'relationship_app/delete_book.html', {'book': book})  # Render the delete confirmation template
