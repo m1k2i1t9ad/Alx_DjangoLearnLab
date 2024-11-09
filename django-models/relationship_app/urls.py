@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import list_books, LibraryDetailView, register,user_login,user_logout
+from .views import register
+from .views import list_books, LibraryDetailView, user_login,user_logout
 from django.contrib.auth.views import LoginView, LogoutView  # Import class-based views for login/logout
 
 urlpatterns = [
