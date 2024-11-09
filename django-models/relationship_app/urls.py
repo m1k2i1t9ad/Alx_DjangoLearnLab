@@ -17,7 +17,7 @@ urlpatterns = [
     path('member/', member_view, name='member_view'),  # URL for Member view
     
     
-     path('books/add/', add_book, name='add_book'),  # URL for adding a book
+    path('books/add/', add_book, name='add_book'),  # URL for adding a book
     path('books/edit/<int:pk>/', edit_book, name='edit_book'),  # URL for editing a book
     path('books/delete/<int:pk>/', delete_book, name='delete_book'),  # URL for deleting a book
 ]
