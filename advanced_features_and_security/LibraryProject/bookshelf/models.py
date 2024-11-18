@@ -4,6 +4,9 @@ from django.contrib.auth.models import AbstractUser
 # Importing BaseUserManager to create a custom manager for user creation
 from django.contrib.auth.models import BaseUserManager
 
+from django.contrib.auth.models import User  # Import the User model for user authentication
+from django.db.models.signals import post_save  # Import signal for post-save actions
+from django.dispatch import receiver  # Import receiver to handle signals
 # Create your models here.
 class Book(models.Model):
     title = models.CharField(max_length=200)
@@ -47,3 +50,27 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)  # User has all permissions
         # Call create_user to create the superuser
         return self.create_user(username, password, **extra_fields)
+    
+    
+    
+class Author(models.Model):
+    name = models.CharField(max_length=100)  # Field for the author's name with a max length of 100 characters
+
+    def __str__(self):
+        return self.name  # Return the name of the author when the object is printed
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)  # Field for the book's title with a max length of 200 characters
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)  # Foreign key relationship to the Author model
+    published_date = models.DateField()  # Field for the book's published date
+
+    class Meta:
+        permissions = [  # Define custom permissions for the Book model
+            ('can_view', 'Can view book'),  # Permission to view books
+            ('can_create', 'Can create book'),  # Permission to create new books
+            ('can_edit', 'Can edit book'),  # Permission to edit existing books
+            ('can_delete', 'Can delete book'),  # Permission to delete books
+        ]
+
+    def __str__(self):
+        return self.title  # Return the title of the book when the object is printed
