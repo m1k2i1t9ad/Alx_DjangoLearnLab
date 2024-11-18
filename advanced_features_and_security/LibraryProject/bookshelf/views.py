@@ -1,5 +1,8 @@
 from django.shortcuts import render
-from django import forms
+
+from .models import Book
+from .forms import ExampleForm  # Import ExampleForm
+
 
 # Create your views here.
 from django.contrib.auth.decorators import permission_required  # Import decorator to enforce permission checks
@@ -59,18 +62,18 @@ def delete_book(request, pk):
 
 
 
-class BookForm(forms.ModelForm):
-    class Meta:
-        model = Book
-        fields = ['title', 'author', 'published_date']
+
+from .models import Book
+from .forms import ExampleForm  # Import ExampleForm
 
 @permission_required('yourapp.can_create', raise_exception=True)
 def add_book(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)  # Use the form for validation
+        form = ExampleForm(request.POST)  # Use ExampleForm for validation
         if form.is_valid():
-            form.save()
+            form.save()  # Save the new book
             return redirect('book_list')
     else:
-        form = BookForm()
+        form = ExampleForm()
+
     return render(request, 'bookshelf/form_example.html', {'form': form})
