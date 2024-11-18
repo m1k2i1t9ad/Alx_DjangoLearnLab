@@ -6,10 +6,10 @@ from django.shortcuts import render, redirect, get_object_or_404  # Import short
 from .models import Book, Author  # Import Book and Author models from the current app
 
 @permission_required('yourapp.can_view', raise_exception=True)  # Ensure the user has permission to view books
-def list_books(request):
+def book_list(request):
     """View to list all books, requires can_view permission."""
     books = Book.objects.all()  # Retrieve all books from the database
-    return render(request, 'relationship_app/list_books.html', {'books': books})  # Render the list_books template with the books context
+    return render(request, 'relationship_app/book_list.html', {'books': books})  # Render the book_list template with the books context
 
 @permission_required('yourapp.can_create', raise_exception=True)  # Ensure the user has permission to create books
 def add_book(request):
@@ -23,7 +23,7 @@ def add_book(request):
             author = get_object_or_404(Author, pk=author_id)  # Retrieve the author instance or return 404 if not found
             new_book = Book(title=title, author=author, published_date=published_date)  # Create a new book instance
             new_book.save()  # Save the new book to the database
-            return redirect('list_books')  # Redirect to the list of books after saving
+            return redirect('book_list')  # Redirect to the list of books after saving
 
     return render(request, 'relationship_app/add_book.html')  # Render the add_book template for GET requests
 
@@ -42,7 +42,7 @@ def edit_book(request, pk):
             book.author = author  # Update the book's author
             book.published_date = published_date  # Update the book's published date
             book.save()  # Save the updated book to the database
-            return redirect('list_books')  # Redirect to the list of books after saving
+            return redirect('book_list')  # Redirect to the list of books after saving
 
     return render(request, 'relationship_app/edit_book.html', {'book': book})  # Render the edit_book template with the book context
 
@@ -52,6 +52,6 @@ def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)  # Retrieve the book instance or return 404 if not found
     if request.method == 'POST':  # Check if the request method is POST (form submission)
         book.delete()  # Delete the book from the database
-        return redirect('list_books')  # Redirect to the list of books after deletion
+        return redirect('book_list')  # Redirect to the list of books after deletion
 
     return render(request, 'relationship_app/delete_book.html', {'book': book})  # Render the delete_book template with the book context
