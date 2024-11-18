@@ -101,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL='relationship_app.CustomeUser'
+AUTH_USER_MODEL='bookshelf.CustomeUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
