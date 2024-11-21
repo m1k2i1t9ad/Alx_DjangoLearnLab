@@ -47,7 +47,8 @@ SECURE_HSTS_PRELOAD = True  # Preload HSTS for browsers
 
 # Redirect all non-HTTPS requests to HTTPS
 SECURE_SSL_REDIRECT = True
-
+# Security settings for proxy headers
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Set the HSTS policy
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Include all subdomains
