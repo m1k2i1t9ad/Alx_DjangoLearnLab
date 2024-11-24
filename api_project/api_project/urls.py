@@ -15,19 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.urls import include
+from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 from .views import BookViewSet
 
-# Create a router and register our BookViewSet with it:
-router=DefaultRouter()
-router.register(r'books_all', BookViewSet, basename='book_all')  # Maps the URL prefix 'books_all' to the BookViewSet
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),   # Include the API app's URLs
-    path('books/', BookList.as_view(), name='book-list'),  # Route for the BookList view (optional)
-    # Include the router URLs for BookViewSet (all CRUD operations):
-    path('',include(router.urls)),  # This includes all routes registered with the router
+    path('api/', include('api.urls')),  # Include the API app's URLs
 ]
