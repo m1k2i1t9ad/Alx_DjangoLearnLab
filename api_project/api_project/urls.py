@@ -25,7 +25,7 @@ router.register(r'books_all', BookViewSet, basename='book_all')  # Maps the URL 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),  # Include the API app's URLs
+    path('api/', include('api.urls')),   # Include the API app's URLs
      # Include the router URLs for BookViewSet (all CRUD operations):
     path('', include(router.urls)),  # This includes all routes registered with the router
 ]
