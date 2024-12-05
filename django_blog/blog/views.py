@@ -18,4 +18,8 @@ def register(request):
 # View for user profile
 @login_required  # Ensure that the user is logged in to access this view
 def profile(request):
-    return render(request, 'registration/profile.html', {'user': request.user})  # Render the profile template with user info
+    return render(request, 'registration/profile.html', {'user': request.user})  # Render the profile template with user 
+
+
+
+

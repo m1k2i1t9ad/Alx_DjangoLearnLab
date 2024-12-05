@@ -1,0 +1,14 @@
+<h2>User Profile</h2>
+<!-- Heading for the user profile page -->
+<p>Username: {{ user.username }}</p>
+<!-- Display the username -->
+<p>Email: {{ user.email }}</p>
+<!-- Display the email -->
+
+<!-- Logout Form -->
+<form action="{% url 'logout' %}" method="post">
+  {% csrf_token %}
+  <!-- Include CSRF token for security -->
+  <button type="submit">Logout</button>
+  <!-- Submit button for logout -->
+</form>
