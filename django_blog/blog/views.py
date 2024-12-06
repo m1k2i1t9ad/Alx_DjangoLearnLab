@@ -128,7 +128,7 @@ class SearchView(ListView):
         return Post.objects.none()  # Return no posts if no query
 
 
-class PostsByTagView(ListView):
+class PostsByTagListView(ListView):
     model = Post
     template_name = 'blog/posts_by_tag.html'
     context_object_name = 'posts'
