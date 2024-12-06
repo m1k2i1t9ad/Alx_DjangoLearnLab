@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect  # Import render and redirect functions
+from django.shortcuts import render, redirect,get_object_or_404  # Import render and redirect functions
 from django.contrib.auth import login, authenticate  # Import login and authenticate methods
 from django.contrib.auth.decorators import login_required  # Import login_required decorator
 from .forms import CustomUserCreationForm  # Import the custom user creation form
