@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm  # Import UserCreationFor
 from django.contrib.auth.models import User  # Import the User model
 from django import forms
 from .models import Post,Comment,Tag
+from taggit.forms import TagWidget  # Import TagWidget
 
 # Create a custom user registration form
 class CustomUserCreationForm(UserCreationForm):
@@ -22,7 +23,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content','tags']
-        
+        widgets = {
+            'tags': TagWidget(),  # Use TagWidget for the tags field
+        }
 
 
 
