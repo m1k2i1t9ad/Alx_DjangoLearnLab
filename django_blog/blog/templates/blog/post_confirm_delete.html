@@ -1,0 +1,22 @@
+{% extends "blog/base.html" %} {% block content %}
+<header>
+  <nav>
+    <ul>
+      <li><a href="{% url 'blog:home' %}">Home</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="content">
+  <h2>Are you sure you want to delete "{{ post.title }}"?</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit">Confirm</button>
+  </form>
+  <a href="{% url 'blog:post-detail' post.pk %}">Cancel</a>
+</div>
+
+<footer>
+  <p>&copy; {{ current_year }} Your Blog Name</p>
+</footer>
+{% endblock %}
