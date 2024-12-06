@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Post,Comment
+from django.db.models import Q
 # View for user registration
 def register(request):
     if request.method == 'POST':  # Check if the request is a POST
@@ -116,6 +117,15 @@ class SearchView(ListView):
     template_name = 'blog/search_results.html'
     context_object_name = 'posts'
 
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Post.objects.filter(
+                Q(title__icontains=query) |  # Check title for query
+                Q(content__icontains=query) |  # Check content for query
+                Q(tags__name__icontains=query)  # Check tags for query
+            ).distinct()  # Ensure distinct results
+        return Post.objects.none()  # Return no posts if no query
 
 
 class PostsByTagView(ListView):
