@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect,get_object_or_404  # Import render and redirect functions
 from django.contrib.auth import login, authenticate  # Import login and authenticate methods
 from django.contrib.auth.decorators import login_required  # Import login_required decorator
-from .forms import CustomUserCreationForm  # Import the custom user creation form
+from .forms import CustomUserCreationForm ,CommentForm # Import the custom user creation form
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Post
+from .models import Post,Comment
 # View for user registration
 def register(request):
     if request.method == 'POST':  # Check if the request is a POST
@@ -109,3 +109,20 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+
+
+class SearchView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
+    context_object_name = 'posts'
+
+
+
+class PostsByTagView(ListView):
+    model = Post
+    template_name = 'blog/posts_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_name = self.kwargs['tag_name']
+        return Post.objects.filter(tags__name=tag_name).distinct()

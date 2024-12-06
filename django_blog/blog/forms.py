@@ -2,7 +2,7 @@ from django import forms  # Import Django forms module
 from django.contrib.auth.forms import UserCreationForm  # Import UserCreationForm for registration
 from django.contrib.auth.models import User  # Import the User model
 from django import forms
-from .models import Post,Comment
+from .models import Post,Comment,Tag
 
 # Create a custom user registration form
 class CustomUserCreationForm(UserCreationForm):
@@ -14,9 +14,14 @@ class CustomUserCreationForm(UserCreationForm):
         
 
 class PostForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content','tags']
         
 
 
