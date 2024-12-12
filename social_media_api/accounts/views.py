@@ -1,34 +1,10 @@
-# from django.shortcuts import render
-# from rest_framework import viewsets
-# from rest_framework.authtoken.views import ObtainAuthToken
-# from rest_framework.response import Response
-# from rest_framework.permissions import IsAuthenticated
-# from .models import User
-# from .serializers import UserSerializer
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#     permission_classes = [IsAuthenticated]
-    
-#     def retrieve(self, request, *args, **kwargs):
-#         # Fetch user profile by ID
-#         instance = self.get_object()
-#         serializer = self.get_serializer(instance)
-#         return Response(serializer.data)
-
-# class CustomAuthToken(ObtainAuthToken):
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         user = serializer.validated_data['user']
-#         token, _ = Token.objects.get_or_create(user=user)
-#         return Response({'token': token.key})
-
-from rest_framework import generics
+from rest_framework import generics,permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from .serializers import UserSerializer, LoginSerializer
+from django.shortcuts import get_object_or_404
+from .models import User
 
 class UserRegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -42,3 +18,20 @@ class UserLoginView(generics.GenericAPIView):
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
         return Response({'token': token.key})
+    
+
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        user_to_follow = get_object_or_404(User, id=user_id)
+        request.user.following.add(user_to_follow)
+        return Response({"message": f"You are now following {user_to_follow.username}."})
+
+class UnfollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        user_to_unfollow = get_object_or_404(User, id=user_id)
+        request.user.following.remove(user_to_unfollow)
+        return Response({"message": f"You have unfollowed {user_to_unfollow.username}."
