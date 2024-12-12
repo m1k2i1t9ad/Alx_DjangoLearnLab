@@ -4,7 +4,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 
 class UserSerializer(serializers.ModelSerializer):
-    password =serializers.CharField(write_only=True)
+    password =serializers.CharField()
     class Meta:
         model = get_user_model()
         fields = ['id', 'username', 'email', 'password', 'bio', 'profile_picture']
