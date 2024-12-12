@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, permissions,generics
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
+from django_filters import rest_framework as filters
 class PostFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
     content = filters.CharFilter(lookup_expr='icontains')

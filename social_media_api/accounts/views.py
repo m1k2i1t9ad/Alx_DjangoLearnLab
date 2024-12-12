@@ -34,4 +34,4 @@ class UnfollowUserView(generics.GenericAPIView):
     def post(self, request, user_id):
         user_to_unfollow = get_object_or_404(User, id=user_id)
         request.user.following.remove(user_to_unfollow)
-        return Response({"message": f"You have unfollowed {user_to_unfollow.username}."
+        return Response({"message": f"You have unfollowed {user_to_unfollow.username}."})
