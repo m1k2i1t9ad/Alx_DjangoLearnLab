@@ -20,3 +20,14 @@ class UserSerializer(serializers.ModelSerializer):
         )
         Token.objects.create(user=user)
         return user
+    
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        user = get_user_model().objects.filter(username=attrs['username']).first()
+        if user is None or not user.check_password(attrs['password']):
+            raise serializers.ValidationError("Invalid username or password")
+        attrs['user'] = user
+        return attrs
