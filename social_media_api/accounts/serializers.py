@@ -4,7 +4,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    password =serializers.CharField(write_only=True)
     class Meta:
         model = get_user_model()
         fields = ['id', 'username', 'email', 'password', 'bio', 'profile_picture']
@@ -22,8 +22,8 @@ class UserSerializer(serializers.ModelSerializer):
         return user
     
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
+    username =serializers.CharField(required=True)
+    password =serializers.CharField(required=True)
 
     def validate(self, attrs):
         user = get_user_model().objects.filter(username=attrs['username']).first()

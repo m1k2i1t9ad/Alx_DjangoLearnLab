@@ -1,11 +1,19 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, CustomAuthToken
+# from django.urls import path, include
+# from rest_framework.routers import DefaultRouter
+# from .views import UserViewSet, CustomAuthToken
 
-router = DefaultRouter()
-router.register(r'users', UserViewSet)
+# router = DefaultRouter()
+# router.register(r'users', UserViewSet)
+
+# urlpatterns = [
+#     path('', include(router.urls)),
+#     path('login/', CustomAuthToken.as_view(), name='login'),
+# ]
+
+from django.urls import path
+from .views import UserRegisterView, UserLoginView
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('login/', CustomAuthToken.as_view(), name='login'),
+    path('register/', UserRegisterView.as_view(), name='register'),
+    path('login/', UserLoginView.as_view(), name='login'),
 ]
