@@ -28,7 +28,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(author=self.request.user)
     
 
-class FeedView(generics.ListAPIView):
+class FeedViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
 
