@@ -52,7 +52,8 @@ class LikeViewSet(viewsets.ModelViewSet):
 
     def create(self, request, post_id=None):
         # Retrieve the post being liked by its ID
-        post =get_object_or_404(Post,id=post_id)
+        post = generics.get_object_or_404(Post,pk=pk)
+        
         
         # Try to create a Like object; if it exists, retrieve it
         like, created = Like.objects.get_or_create(user=request.user, post=post)
@@ -73,7 +74,7 @@ class LikeViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, post_id=None):
         # Retrieve the post being unliked by its ID
-        post = get_object_or_404(Post,id=post_id)
+        post = generics.get_object_or_404(Post,pk=pk)
         
         # Attempt to find the Like object for the authenticated user and post
         like = Like.objects.filter(user=request.user, post=post).first()
