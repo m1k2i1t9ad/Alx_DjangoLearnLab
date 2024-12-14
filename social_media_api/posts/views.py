@@ -3,6 +3,7 @@ from rest_framework import viewsets, permissions,generics
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from django_filters import rest_framework as filters
+from django.shortcuts import get_object_or_404
 class PostFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
     content = filters.CharFilter(lookup_expr='icontains')
@@ -51,7 +52,7 @@ class LikeViewSet(viewsets.ModelViewSet):
 
     def create(self, request, post_id=None):
         # Retrieve the post being liked by its ID
-        post = Post.objects.get(id=post_id)
+        post =get_object_or_404(Post,id=post_id)
         
         # Try to create a Like object; if it exists, retrieve it
         like, created = Like.objects.get_or_create(user=request.user, post=post)
@@ -72,7 +73,7 @@ class LikeViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, post_id=None):
         # Retrieve the post being unliked by its ID
-        post = Post.objects.get(id=post_id)
+        post = get_object_or_404(Post,id=post_id)
         
         # Attempt to find the Like object for the authenticated user and post
         like = Like.objects.filter(user=request.user, post=post).first()
