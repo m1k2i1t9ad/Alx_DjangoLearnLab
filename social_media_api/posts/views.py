@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions,generics
 from .models import Post, Comment
-from .serializers import PostSerializer, CommentSerializer
+from .serializers import PostSerializer, CommentSerializer,LikeSerializer
 from django_filters import rest_framework as filters
 from django.shortcuts import get_object_or_404
 class PostFilter(filters.FilterSet):
